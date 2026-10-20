@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lunar Landing Sandbox</title>
+<style>
+/* Layout: left rail = map picker + controls; right = 3D view with live readout and timeline. One deliberate dark look. */
+:root{--bg:#0d0d0d;--panel:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#898781;--line:#2c2c2a;--accent:#6da7ec;
+--c-base:#3987e5;--c-wait:#eb6834;--c-rl:#1baf7a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+h1{font-size:18px;margin:0;font-weight:600}header span{color:var(--muted)}
+main{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:12px;padding:12px;align-items:start}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px;min-width:0}
+h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
+#ov{width:100%;display:block;border-radius:4px;cursor:crosshair;background:#111}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+button{background:#262625;color:var(--ink);border:1px solid #3a3a37;border-radius:4px;padding:6px 10px;font:inherit;cursor:pointer}
+button:hover{background:#30302e}button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+button.primary{background:#2a78d6;border-color:#2a78d6;color:#fff;font-weight:600}button.primary:hover{background:#3987e5}
+button.on{border-color:var(--accent);color:var(--accent)}button:disabled{opacity:.45;cursor:not-allowed}
+label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.note{color:var(--muted);font-size:12px;margin-top:6px}
+#stage{position:relative;width:100%;height:min(62vh,640px);min-height:340px;border-radius:4px;overflow:hidden;background:#08090b}
+#gl{position:absolute;inset:0;width:100%;height:100%}
+#msg{position:absolute;left:12px;top:10px;right:12px;color:var(--ink2);font-size:13px;pointer-events:none;text-shadow:0 1px 3px #000}
+#legend{position:absolute;left:12px;bottom:8px;color:var(--ink2);font-size:12px;text-shadow:0 1px 3px #000;pointer-events:none}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-weight:500;color:var(--muted);text-align:right;font-size:12px;padding:4px 6px;border-bottom:1px solid var(--line)}
+td{padding:5px 6px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}.tw{overflow-x:auto}
+input[type=range]{flex:1;min-width:120px;accent-color:#2a78d6}
+.res{margin-top:8px;display:flex;flex-direction:column;gap:3px}
+.ok{color:#0ca30c}.bad{color:#ec835a}
+</style></head><body>
+<header><h1>Lunar Landing Sandbox</h1><span id="mapname"></span></header>
+<main>
+ <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+  <div class="panel"><h2>1. Pick an 8 x 8 km window</h2>
+   <canvas id="ov"></canvas>
+   <div class="note" id="ovnote">Click the map to choose where to land.</div>
+   <div class="note" id="winfo"></div></div>
+  <div class="panel"><h2>2. Choose who flies it</h2>
+   <label><span class="dot" style="background:var(--c-base)"></span><input type="checkbox" id="p_baseline" checked> Standard guidance</label>
+   <label><span class="dot" style="background:var(--c-wait)"></span><input type="checkbox" id="p_wait" checked> Hover-and-wait rule</label>
+   <label><span class="dot" style="background:var(--c-rl)"></span><input type="checkbox" id="p_rl"> <span id="rlname">RL policy</span></label>
+   <div class="row"><button class="primary" id="fly">Fly</button><button id="again">Another start</button>
+    <span class="note" id="seedl"></span></div>
+   <div class="note">Same window, same start and same random events for everyone, so the comparison is fair.</div></div>
+  <div class="panel"><h2>Colour the ground by</h2>
+   <div class="row" style="margin-top:0"><button id="m_elev" class="on">Height</button><button id="m_safe">Safe landing ground</button><button id="m_match">Where matching works</button></div>
+   <div class="row"><label>Height exaggeration <input type="range" id="exag" min="0.5" max="3" step="0.25" value="1"></label></div>
+   <div class="row"><button id="v_obl" class="on">Angled view</button><button id="v_top">Top view</button><button id="v_fol">Follow</button></div></div>
+ </div>
+ <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+  <div class="panel"><div id="stage"><canvas id="gl"></canvas><div id="msg">Pick a window on the map.</div><div id="legend"></div></div>
+   <div class="row"><button id="play">Pause</button>
+    <button class="spd on" data-s="1">1x</button><button class="spd" data-s="2">2x</button><button class="spd" data-s="5">5x</button><button class="spd" data-s="10">10x</button>
+    <input type="range" id="tl" min="0" max="1" step="0.1" value="0" aria-label="Time"><span id="tt" class="note" style="min-width:90px"></span></div></div>
+  <div class="panel"><h2>Live readout</h2><div class="tw"><table id="hud"><thead><tr><th>Lander</th><th>Height above ground</th><th>Speed</th><th>Fuel used</th><th>Position error</th><th>Uncertainty (1σ)</th><th>Terrain fixes</th></tr></thead><tbody></tbody></table></div>
+   <div class="res" id="res"></div>
+   <div class="note">Position error is how far the lander's belief is from where it really is. Rings on the ground show where it believes it is; the ring size is its uncertainty. The white circle at the target is the 50 m precision zone.</div></div>
+ </div>
+</main>
+<script src="/vendor/three.min.js"></script>
+<script>
+const COL={baseline:0x3987e5,wait:0xeb6834,rl:0x1baf7a}, NAME={baseline:'Standard guidance',wait:'Hover-and-wait rule',rl:'RL policy'};
+const OUTCOME={success:'Landed safely',hard_landing:'Hard landing',unsafe_site:'Landed on unsafe ground',timeout:'Ran out of time',out_of_bounds:'Left the area'};
+const $=id=>document.getElementById(id);
+let info=null,pick={u:.5,v:.5},terr=null,runs=[],seed=1,playing=true,speed=1,T=0,mode='elev',view='obl',exag=1;
+const dec=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer};
+const get=async u=>{const r=await fetch(u);const j=await r.json();if(j.error)throw new Error(j.error);return j};
+
+/* ---------- overview map ---------- */
+const ov=$('ov'),oc=ov.getContext('2d');let ovImg=new Image(),hover=null;
+function drawOv(){if(!info)return;oc.drawImage(ovImg,0,0);const W=ov.width,H=ov.height,w=info.window_px;
+ if(info.split>=1){const box=(u,v,st,dash)=>{oc.strokeStyle=st;oc.lineWidth=2;oc.setLineDash(dash?[5,4]:[]);oc.strokeRect(u*W-w/2,v*H-w/2,w,w);oc.setLineDash([])};if(hover)box(hover.u,hover.v,'rgba(255,255,255,.5)',true);box(pick.u,pick.v,'#fff',false);return}
+ const sx=info.split*W;oc.fillStyle='rgba(0,0,0,.45)';oc.fillRect(sx,0,W-sx,H);oc.strokeStyle='rgba(255,255,255,.4)';oc.setLineDash([4,4]);
+ oc.beginPath();oc.moveTo(sx,0);oc.lineTo(sx,H);oc.stroke();oc.setLineDash([]);oc.fillStyle='rgba(240,239,236,.85)';const fs=Math.round(12*ov.width/Math.max(ov.clientWidth,1));oc.font=fs+'px system-ui';
+ oc.fillText('held out from RL training',Math.min(sx+6,W-fs*13),fs+2);oc.fillText('RL trains here',6,fs+2);
+ const box=(u,v,st,dash)=>{oc.strokeStyle=st;oc.lineWidth=2;oc.setLineDash(dash?[5,4]:[]);oc.strokeRect(u*W-w/2,v*H-w/2,w,w);oc.setLineDash([])};
+ if(hover)box(hover.u,hover.v,'rgba(255,255,255,.5)',true);box(pick.u,pick.v,'#fff',false)}
+ov.addEventListener('mousemove',e=>{const r=ov.getBoundingClientRect();hover={u:(e.clientX-r.left)/r.width,v:(e.clientY-r.top)/r.height};drawOv()});
+ov.addEventListener('mouseleave',()=>{hover=null;drawOv()});
+ov.addEventListener('click',e=>{const r=ov.getBoundingClientRect();loadWindow((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height)});
+
+/* ---------- three.js scene ---------- */
+const stage=$('stage'),gl=$('gl');
+const renderer=new THREE.WebGLRenderer({canvas:gl,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x08090b);
+const cam=new THREE.PerspectiveCamera(45,1,50,60000);
+scene.add(new THREE.AmbientLight(0xffffff,.5));const sun=new THREE.DirectionalLight(0xffffff,.6);sun.position.set(-6000,5000,-3000);scene.add(sun);const fill=new THREE.DirectionalLight(0xbfd0e6,.18);fill.position.set(5000,3500,7000);scene.add(fill);
+const orb={th:0,ph:1.0,R:11500,tgt:new THREE.Vector3()};
+function setCam(){const s=Math.sin(orb.ph),c=Math.cos(orb.ph);cam.position.set(orb.tgt.x+orb.R*s*Math.sin(orb.th),orb.tgt.y+orb.R*c,orb.tgt.z+orb.R*s*Math.cos(orb.th));cam.lookAt(orb.tgt)}
+let drag=null;gl.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};gl.setPointerCapture(e.pointerId)});
+gl.addEventListener('pointermove',e=>{if(!drag)return;orb.th-=(e.clientX-drag.x)*.006;orb.ph=Math.min(1.5,Math.max(.05,orb.ph-(e.clientY-drag.y)*.006));drag={x:e.clientX,y:e.clientY};setCam()});
+gl.addEventListener('pointerup',()=>drag=null);gl.addEventListener('wheel',e=>{e.preventDefault();orb.R=Math.min(30000,Math.max(300,orb.R*Math.exp(e.deltaY*.001)));setCam()},{passive:false});
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+addEventListener('resize',resize);
+
+let mesh=null,H=null,E=8000,zc=0,dyn=new THREE.Group();scene.add(dyn);
+const ramp=(t,a,b)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];
+const hex=h=>[(h>>16&255)/255,(h>>8&255)/255,(h&255)/255];
+function gh(x,y){ // bilinear ground height (m) from the drawn grid
+ const n=terr.n,c=terr.cell,fx=Math.min(Math.max((x-15)/c,0),n-1.001),fy=Math.min(Math.max((y-15)/c,0),n-1.001),i=Math.floor(fx),j=Math.floor(fy),a=fx-i,b=fy-j;
+ const h=(ii,jj)=>H[jj*n+ii];return h(i,j)*(1-a)*(1-b)+h(i+1,j)*a*(1-b)+h(i,j+1)*(1-a)*b+h(i+1,j+1)*a*b}
+const P=(x,y,z)=>new THREE.Vector3(x-E/2,(z-zc)*exag,-(y-E/2));
+function buildTerrain(){
+ if(mesh){scene.remove(mesh);mesh.geometry.dispose()}
+ const n=terr.n,c=terr.cell;H=new Float32Array(dec(terr.h));const sf=new Uint8Array(dec(terr.safe)),mt=new Uint8Array(dec(terr.match));
+ E=terr.extent;zc=(terr.zmin+terr.zmax)/2;const pos=new Float32Array(n*n*3),col=new Float32Array(n*n*3),idx=[];
+ for(let j=0;j<n;j++)for(let i=0;i<n;i++){const k=j*n+i,p=P(i*c+15,j*c+15,H[k]);pos.set([p.x,p.y,p.z],k*3);
+  if(i<n-1&&j<n-1){idx.push(k,k+1,k+n);idx.push(k+1,k+n+1,k+n)}}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));g.setIndex(idx);g.computeVertexNormals();
+ mesh=new THREE.Mesh(g,new THREE.MeshLambertMaterial({vertexColors:true,side:THREE.DoubleSide}));scene.add(mesh);recolor(sf,mt);
+ mesh.userData={sf,mt}}
+function recolor(sf,mt){const n=terr.n,col=mesh.geometry.attributes.color;sf=sf||mesh.userData.sf;mt=mt||mesh.userData.mt;
+ const lo=hex(0x56606e),hi=hex(0xc9cdd3),aq=hex(0x1baf7a),dk=hex(0x1a1420),or=hex(0xf3a35a);
+ for(let k=0;k<n*n;k++){const t=(H[k]-terr.zmin)/Math.max(terr.zmax-terr.zmin,1);let c=ramp(t,lo,hi);
+  if(mode==='safe'){const s=sf[k]/255;c=ramp(s*.85,c.map(x=>x*.6),aq)}
+  else if(mode==='match'){const m=mt[k]/255;c=ramp(m,dk,or)}
+  col.setXYZ(k,c[0],c[1],c[2])}col.needsUpdate=true;
+ $('legend').textContent=mode==='safe'?'Green = flat enough to land on (slope under 10°)':mode==='match'?'Brighter = more distinctive ground, so terrain matching works better':'Lighter = higher ground'}
+function rebuildGeometryHeights(){if(!terr)return;const n=terr.n,c=terr.cell,a=mesh.geometry.attributes.position;
+ for(let j=0;j<n;j++)for(let i=0;i<n;i++){const k=j*n+i,p=P(i*c+15,j*c+15,H[k]);a.setXYZ(k,p.x,p.y,p.z)}a.needsUpdate=true;mesh.geometry.computeVertexNormals()}
+
+/* lander visuals */
+let vis=[];
+function clearVis(){while(dyn.children.length){const o=dyn.children.pop();o.traverse&&o.traverse(q=>{q.geometry&&q.geometry.dispose()})}vis=[]}
+function buildVis(){clearVis();runs.forEach(r=>{const c=COL[r.name];const g=new THREE.Group();
+ const cone=new THREE.Mesh(new THREE.ConeGeometry(1,2.4,12),new THREE.MeshBasicMaterial({color:c}));g.add(cone);
+ const ring=new THREE.Mesh(new THREE.RingGeometry(.94,1,64),new THREE.MeshBasicMaterial({color:c,side:THREE.DoubleSide,transparent:true,opacity:.8}));ring.rotation.x=-Math.PI/2;
+ const disc=new THREE.Mesh(new THREE.CircleGeometry(1,48),new THREE.MeshBasicMaterial({color:c,side:THREE.DoubleSide,transparent:true,opacity:.12}));disc.rotation.x=-Math.PI/2;
+ const nl=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]),new THREE.LineBasicMaterial({color:c,transparent:true,opacity:.55}));
+ const N=r.t.length,tp=new Float32Array(N*3),trail=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:c}));
+ trail.geometry.setAttribute('position',new THREE.BufferAttribute(tp,3));trail.geometry.setDrawRange(0,0);trail.frustumCulled=false;
+ const fixes=[];r.fix.forEach((f,i)=>{if(f){const m=new THREE.Mesh(new THREE.OctahedronGeometry(1),new THREE.MeshBasicMaterial({color:c}));m.userData.i=i;m.visible=false;fixes.push(m);dyn.add(m)}});
+ [g,ring,disc,nl,trail].forEach(o=>dyn.add(o));vis.push({r,g,cone,ring,disc,nl,trail,tp,fixes,N});
+ r.pts=r.r.map(p=>P(p[0],p[1],p[2]))});
+ const tg=runs[0].target,tp=P(tg[0],tg[1],tg[2]);const pole=new THREE.Line(new THREE.BufferGeometry().setFromPoints([tp,new THREE.Vector3(tp.x,tp.y+700,tp.z)]),new THREE.LineBasicMaterial({color:0xffffff}));
+ const tr=new THREE.Mesh(new THREE.RingGeometry(48,50,64),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide}));tr.rotation.x=-Math.PI/2;tr.position.set(tp.x,tp.y+4,tp.z);dyn.add(pole,tr)}
+
+/* ---------- playback ---------- */
+const tmax=()=>runs.reduce((m,r)=>Math.max(m,r.t_end),0);
+function idx(r,t){const a=r.t;let i=Math.min(Math.floor(t),a.length-2);if(i<0)i=0;while(i<a.length-2&&a[i+1]<=t)i++;while(i>0&&a[i]>t)i--;return i}
+function lerp3(a,b,f){return[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f]}
+const rows={};
+function frame(t,now){const cen=new THREE.Vector3();let cn=0;
+ vis.forEach(V=>{const r=V.r,i=idx(r,t),t0=r.t[i],t1=r.t[i+1],f=Math.min(Math.max((t-t0)/Math.max(t1-t0,1e-6),0),1),done=t>=r.t_end;
+  const p=lerp3(r.r[i],r.r[i+1],f),q=lerp3(r.r_hat[i],r.r_hat[i+1],f),sg=r.sigma_h[i]+(r.sigma_h[i+1]-r.sigma_h[i])*f;
+  const pv=P(p[0],p[1],p[2]),qg=P(q[0],q[1],gh(Math.min(Math.max(q[0],15),E-15),Math.min(Math.max(q[1],15),E-15))+3/exag),qv=P(q[0],q[1],q[2]);
+  const k=Math.max(orb.R*.011,30);V.g.position.copy(pv);V.cone.scale.set(k,k,k);V.cone.position.y=k*1.2;
+  V.ring.position.copy(qg);V.ring.scale.setScalar(Math.max(sg*1,8));V.disc.position.copy(qg);V.disc.scale.setScalar(Math.max(sg*1,8));
+  const pos=V.nl.geometry.attributes.position;pos.setXYZ(0,pv.x,pv.y,pv.z);pos.setXYZ(1,qv.x,qv.y,qv.z);pos.needsUpdate=true;
+  let cnt=0;for(let j=0;j<=i;j++){V.tp.set([r.pts[j].x,r.pts[j].y,r.pts[j].z],j*3);cnt++}V.tp.set([pv.x,pv.y,pv.z],(i+1)*3);cnt++;
+  V.trail.geometry.attributes.position.needsUpdate=true;V.trail.geometry.setDrawRange(0,Math.min(cnt+ (i<V.N-1?0:0),V.N));
+  const recent=r.fix.slice(Math.max(0,i-1),i+2).some(x=>x)&&!done;V.ring.material.opacity=recent?1:.6;
+  V.fixes.forEach(m=>{const j=m.userData.i;m.visible=j<=i;const pp=r.pts[j];m.position.set(pp.x,pp.y,pp.z);const s=Math.max(orb.R*.0016,5);m.scale.setScalar(s)});
+  cen.add(pv);cn++;
+  const agl=p[2]-gh(Math.min(Math.max(p[0],15),E-15),Math.min(Math.max(p[1],15),E-15)),dt=Math.max(r.t[i+1]-r.t[i],1e-6),
+   sp=Math.hypot(r.r[i+1][0]-r.r[i][0],r.r[i+1][1]-r.r[i][1],r.r[i+1][2]-r.r[i][2])/dt,fuel=2000-(r.mass[i]+(r.mass[i+1]-r.mass[i])*f),
+   err=Math.hypot(q[0]-p[0],q[1]-p[1]),nf=r.fix.slice(0,i+1).reduce((a,b)=>a+b,0);
+  const R=rows[r.name];if(R&&now){R.c[1].textContent=done?'0 m':Math.max(agl,0).toFixed(0)+' m';R.c[2].textContent=done?'0':sp.toFixed(1)+' m/s';R.c[3].textContent=fuel.toFixed(0)+' kg';
+   R.c[4].textContent=err.toFixed(0)+' m';R.c[5].textContent=sg.toFixed(0)+' m';R.c[6].textContent=nf+' / '+r.fixes}});
+ if(view==='fol'&&cn){cen.multiplyScalar(1/cn);orb.tgt.copy(cen);setCam()}
+ $('tl').value=t;$('tt').textContent=t.toFixed(0)+' s / '+tmax().toFixed(0)+' s'}
+let last=performance.now(),acc=0;
+function loop(now){requestAnimationFrame(loop);const dt=(now-last)/1000;last=now;
+ if(runs.length){if(playing){T=Math.min(T+dt*speed,tmax());if(T>=tmax()){playing=false;$('play').textContent='Replay'}}
+  acc+=dt;frame(T,acc>.08?(acc=0,true):false)}
+ renderer.render(scene,cam)}
+
+/* ---------- controls ---------- */
+function setView(v){view=v;['obl','top','fol'].forEach(k=>$('v_'+k).classList.toggle('on',k===v));
+ if(v==='obl'){orb.tgt.set(0,0,0);orb.th=0;orb.ph=1.0;orb.R=11500}else if(v==='top'){orb.tgt.set(0,0,0);orb.th=0;orb.ph=.06;orb.R=12500}else{orb.R=1800;orb.ph=1.0}setCam()}
+function setMode(m){mode=m;['elev','safe','match'].forEach(k=>$('m_'+k).classList.toggle('on',k===m));if(mesh)recolor()}
+$('m_elev').onclick=()=>setMode('elev');$('m_safe').onclick=()=>setMode('safe');$('m_match').onclick=()=>setMode('match');
+$('v_obl').onclick=()=>setView('obl');$('v_top').onclick=()=>setView('top');$('v_fol').onclick=()=>setView('fol');
+$('exag').oninput=e=>{exag=+e.target.value;if(terr){rebuildGeometryHeights();if(runs.length)buildVis()}};
+$('play').onclick=()=>{if(!runs.length)return;if(T>=tmax()){T=0}playing=!playing;$('play').textContent=playing?'Pause':'Play'};
+document.querySelectorAll('.spd').forEach(b=>b.onclick=()=>{speed=+b.dataset.s;document.querySelectorAll('.spd').forEach(x=>x.classList.toggle('on',x===b))});
+$('tl').oninput=e=>{T=+e.target.value;playing=false;$('play').textContent='Play'};
+$('fly').onclick=()=>fly(false);$('again').onclick=()=>fly(true);
+
+async function loadWindow(u,v){try{$('msg').textContent='Loading terrain...';runs=[];clearVis();
+ terr=await get(`/api/terrain?u=${u}&v=${v}`);pick={u:terr.u,v:terr.v};drawOv();buildTerrain();setView(view==='fol'?'obl':view);
+ const reg={train:'Inside the RL training region.','held-out':'Held out from RL training, so a fair test of RL.',straddles:'Straddles the train/held-out line.',all:'No train/held-out split on this map.'}[terr.region];
+ $('winfo').textContent=`${terr.targets.toLocaleString()} candidate landing spots. ${reg}`+(terr.targets<20?' Very little safe ground here; flights may fail to start.':'');
+ $('msg').textContent='Press Fly.';$('tt').textContent='';$('hud').tBodies[0].innerHTML='';$('res').innerHTML=''}catch(e){$('msg').textContent='Error: '+e.message}}
+async function fly(newSeed){if(!terr)return;if(newSeed)seed++;const ps=['baseline','wait','rl'].filter(n=>$('p_'+n).checked&&!$('p_'+n).disabled);if(!ps.length){$('msg').textContent='Tick at least one lander.';return}
+ $('msg').textContent='Simulating...';$('seedl').textContent='start #'+seed;
+ try{const res=await get(`/api/run?u=${pick.u}&v=${pick.v}&seed=${seed}&policies=${ps.join(',')}`);runs=res.runs;buildVis();
+  const tb=$('hud').tBodies[0];tb.innerHTML='';Object.keys(rows).forEach(k=>delete rows[k]);
+  runs.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><span class="dot" style="background:#${COL[r.name].toString(16).padStart(6,'0')}"></span> ${NAME[r.name]}</td>`+'<td></td>'.repeat(6);tb.appendChild(tr);rows[r.name]={c:[...tr.children]}});
+  $('res').innerHTML=runs.map(r=>{const ok=r.outcome==='success';return `<div><span class="${ok?'ok':'bad'}">${ok?'✓':'✗'}</span> <b>${NAME[r.name]}</b>: ${OUTCOME[r.outcome]||r.outcome}${isFinite(r.landing_err)?`, ${r.landing_err.toFixed(1)} m from the target`:''}, ${r.fuel.toFixed(0)} kg fuel, ${r.t_end.toFixed(0)} s</div>`}).join('');
+  T=0;playing=true;$('play').textContent='Pause';$('tl').max=tmax();$('msg').textContent='';if(view==='fol')setView('fol')}catch(e){$('msg').textContent='Error: '+e.message}}
+
+/* ---------- start ---------- */
+(async()=>{resize();setCam();requestAnimationFrame(loop);
+ info=await get('/api/info');$('mapname').textContent=`${info.name} · ${info.km_x.toFixed(0)} x ${info.km_y.toFixed(0)} km`;
+ const rl=$('p_rl');rl.disabled=!info.rl;rl.checked=info.rl;$('rlname').textContent=info.rl?`RL policy (${info.rl_name})`:'RL policy (no model loaded)';
+ ov.width=info.overview_w;ov.height=info.overview_h;ovImg.onload=()=>{drawOv()};ovImg.src='/api/overview.png';
+ pick={u:.5,v:.5};const t0=new URL(location.href).searchParams;await loadWindow(+(t0.get('u')||.5),+(t0.get('v')||.5));
+ if(t0.get('autofly'))fly(false)})();
+</script></body></html>

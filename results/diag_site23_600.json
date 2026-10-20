@@ -1,0 +1,809 @@
+{
+ "tile": "data/site23.npy",
+ "sigma": 600.0,
+ "categories": {
+  "precise": 43,
+  "false_fix": 2,
+  "zero_fix": 10,
+  "nav_ok_hazard": 3,
+  "other": 2
+ },
+ "episodes": [
+  {
+   "seed": 10000,
+   "outcome": "success",
+   "landing_err": 0.8634066354780587,
+   "n_fix": 24,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5193.356077419874,
+   "max_fix_err": 8.12882017187298,
+   "nav_err_end": 0.8103681960934174,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10001,
+   "outcome": "timeout",
+   "landing_err": 885.5661809671437,
+   "n_fix": 2,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5646.562605920624,
+   "max_fix_err": 905.1871674594082,
+   "nav_err_end": 885.5709292346909,
+   "rejects": {
+    "rejected_gate": 113
+   },
+   "category": "false_fix"
+  },
+  {
+   "seed": 10002,
+   "outcome": "success",
+   "landing_err": 0.17223375027489982,
+   "n_fix": 12,
+   "t_first_fix": 15.0,
+   "alt_first_fix": 4729.591582935066,
+   "max_fix_err": 5.807924878574108,
+   "nav_err_end": 0.26759807345778364,
+   "rejects": {
+    "rejected_ambiguous": 7
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10003,
+   "outcome": "success",
+   "landing_err": 0.464447466227681,
+   "n_fix": 25,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5776.952268512582,
+   "max_fix_err": 18.019668504837814,
+   "nav_err_end": 0.5422918806323656,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10004,
+   "outcome": "unsafe_site",
+   "landing_err": 792.6541360855624,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 792.5852671087611,
+   "rejects": {
+    "rejected_ambiguous": 29
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10005,
+   "outcome": "success",
+   "landing_err": 0.6897494058418072,
+   "n_fix": 26,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5160.411426867213,
+   "max_fix_err": 9.492485384125924,
+   "nav_err_end": 0.6425946831167108,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10006,
+   "outcome": "success",
+   "landing_err": 1.6420019680282096,
+   "n_fix": 49,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5881.4725539075,
+   "max_fix_err": 55.309328193011304,
+   "nav_err_end": 1.7351292976689272,
+   "rejects": {
+    "rejected_gate": 3
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10007,
+   "outcome": "success",
+   "landing_err": 0.8131495928547512,
+   "n_fix": 13,
+   "t_first_fix": 27.0,
+   "alt_first_fix": 5061.046396550096,
+   "max_fix_err": 5.598960442425413,
+   "nav_err_end": 0.8014809024295348,
+   "rejects": {
+    "rejected_ambiguous": 13
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10008,
+   "outcome": "unsafe_site",
+   "landing_err": 871.2936854002947,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 870.5453528048445,
+   "rejects": {
+    "rejected_ambiguous": 33
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10009,
+   "outcome": "success",
+   "landing_err": 2.9615104565066814,
+   "n_fix": 22,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5571.41622997813,
+   "max_fix_err": 20.699571633642822,
+   "nav_err_end": 2.9022078321955083,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10010,
+   "outcome": "unsafe_site",
+   "landing_err": 737.3659316082994,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 737.6190256563816,
+   "rejects": {
+    "rejected_ambiguous": 22
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10011,
+   "outcome": "success",
+   "landing_err": 1.0058204612258717,
+   "n_fix": 20,
+   "t_first_fix": 5.0,
+   "alt_first_fix": 5530.139550514565,
+   "max_fix_err": 22.559955653051222,
+   "nav_err_end": 0.957689478591992,
+   "rejects": {
+    "rejected_ambiguous": 2
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10012,
+   "outcome": "unsafe_site",
+   "landing_err": 604.836206684594,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 604.8079614037558,
+   "rejects": {
+    "rejected_ambiguous": 19
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10013,
+   "outcome": "success",
+   "landing_err": 0.6743355107354985,
+   "n_fix": 25,
+   "t_first_fix": 13.0,
+   "alt_first_fix": 5327.572691099728,
+   "max_fix_err": 7.791317613868921,
+   "nav_err_end": 0.7065006789105405,
+   "rejects": {
+    "rejected_ambiguous": 6
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10014,
+   "outcome": "success",
+   "landing_err": 0.8421586766418517,
+   "n_fix": 53,
+   "t_first_fix": 3.0,
+   "alt_first_fix": 5843.552751641119,
+   "max_fix_err": 21.64975818613004,
+   "nav_err_end": 0.6559375483436156,
+   "rejects": {
+    "rejected_ambiguous": 1
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10015,
+   "outcome": "unsafe_site",
+   "landing_err": 699.0228760019367,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 699.0655658745083,
+   "rejects": {
+    "rejected_ambiguous": 28
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10016,
+   "outcome": "success",
+   "landing_err": 1.129063170607577,
+   "n_fix": 3,
+   "t_first_fix": 39.0,
+   "alt_first_fix": 4603.436429711362,
+   "max_fix_err": 4.731652502302898,
+   "nav_err_end": 1.0000558500458874,
+   "rejects": {
+    "rejected_ambiguous": 19
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10017,
+   "outcome": "success",
+   "landing_err": 502.18467687277865,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 502.2260373266817,
+   "rejects": {
+    "rejected_ambiguous": 19
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10018,
+   "outcome": "unsafe_site",
+   "landing_err": 808.3415047474442,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 808.2142572718999,
+   "rejects": {
+    "rejected_ambiguous": 30
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10019,
+   "outcome": "success",
+   "landing_err": 0.9711644622971732,
+   "n_fix": 38,
+   "t_first_fix": 3.0,
+   "alt_first_fix": 5341.892571349489,
+   "max_fix_err": 10.262776397943844,
+   "nav_err_end": 1.033277781841757,
+   "rejects": {
+    "rejected_ambiguous": 1
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10020,
+   "outcome": "success",
+   "landing_err": 3.099041871986373,
+   "n_fix": 34,
+   "t_first_fix": 3.0,
+   "alt_first_fix": 5400.649519297418,
+   "max_fix_err": 34.5805771228509,
+   "nav_err_end": 3.0528897536126416,
+   "rejects": {
+    "rejected_ambiguous": 1
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10021,
+   "outcome": "unsafe_site",
+   "landing_err": 467.31254069821466,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 466.4402435553972,
+   "rejects": {
+    "rejected_ambiguous": 23
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10022,
+   "outcome": "unsafe_site",
+   "landing_err": 666.5102683288752,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 666.5592418277987,
+   "rejects": {
+    "rejected_ambiguous": 26
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10023,
+   "outcome": "success",
+   "landing_err": 0.49467885052942057,
+   "n_fix": 72,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5992.546713805851,
+   "max_fix_err": 42.91558281217139,
+   "nav_err_end": 0.6655844095908207,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10024,
+   "outcome": "success",
+   "landing_err": 2.511527496545063,
+   "n_fix": 30,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5428.2451228989785,
+   "max_fix_err": 22.291577993930098,
+   "nav_err_end": 2.4391021184527633,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10025,
+   "outcome": "success",
+   "landing_err": 3.0507822934633326,
+   "n_fix": 12,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5581.265644161633,
+   "max_fix_err": 10.156117700307739,
+   "nav_err_end": 2.943455661643075,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10026,
+   "outcome": "success",
+   "landing_err": 1.4637732187125363,
+   "n_fix": 38,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5525.950103463999,
+   "max_fix_err": 35.127397189593175,
+   "nav_err_end": 1.4807483466956155,
+   "rejects": {
+    "rejected_ncc": 1
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10027,
+   "outcome": "success",
+   "landing_err": 0.9877035897142596,
+   "n_fix": 27,
+   "t_first_fix": 11.0,
+   "alt_first_fix": 5270.5659066938115,
+   "max_fix_err": 7.834984297258715,
+   "nav_err_end": 1.3833944825433344,
+   "rejects": {
+    "rejected_ambiguous": 5
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10028,
+   "outcome": "success",
+   "landing_err": 1.1372811620721754,
+   "n_fix": 25,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5669.790565822933,
+   "max_fix_err": 19.579328493577624,
+   "nav_err_end": 0.7378690118252483,
+   "rejects": {
+    "rejected_gate": 1
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10029,
+   "outcome": "success",
+   "landing_err": 1.2017182159386612,
+   "n_fix": 32,
+   "t_first_fix": 13.0,
+   "alt_first_fix": 5380.690874664836,
+   "max_fix_err": 12.712688609473906,
+   "nav_err_end": 1.320958446352966,
+   "rejects": {
+    "rejected_ambiguous": 6
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10030,
+   "outcome": "unsafe_site",
+   "landing_err": 1218.9985076552766,
+   "n_fix": 0,
+   "t_first_fix": null,
+   "alt_first_fix": null,
+   "max_fix_err": NaN,
+   "nav_err_end": 1219.2325951102578,
+   "rejects": {
+    "rejected_ambiguous": 22
+   },
+   "category": "zero_fix"
+  },
+  {
+   "seed": 10031,
+   "outcome": "success",
+   "landing_err": 1.1014288185682166,
+   "n_fix": 26,
+   "t_first_fix": 5.0,
+   "alt_first_fix": 5296.348564223498,
+   "max_fix_err": 15.05710415838016,
+   "nav_err_end": 1.3523744513630969,
+   "rejects": {
+    "rejected_ambiguous": 2
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10032,
+   "outcome": "success",
+   "landing_err": 0.5754981716092995,
+   "n_fix": 43,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5707.092073761884,
+   "max_fix_err": 13.607769850373131,
+   "nav_err_end": 0.5976498667645598,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10033,
+   "outcome": "success",
+   "landing_err": 1.3244336345741636,
+   "n_fix": 69,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5909.977918931904,
+   "max_fix_err": 78.51324582081827,
+   "nav_err_end": 1.2509478756092305,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10034,
+   "outcome": "success",
+   "landing_err": 1.4933270395427207,
+   "n_fix": 27,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5554.015893744087,
+   "max_fix_err": 11.364860361144466,
+   "nav_err_end": 1.4210243204358668,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10035,
+   "outcome": "unsafe_site",
+   "landing_err": 1.0385973556285537,
+   "n_fix": 34,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5448.780681407709,
+   "max_fix_err": 17.192664880337002,
+   "nav_err_end": 1.132564953572747,
+   "rejects": {},
+   "category": "nav_ok_hazard"
+  },
+  {
+   "seed": 10036,
+   "outcome": "success",
+   "landing_err": 4.5876102980949165,
+   "n_fix": 24,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5547.452424760448,
+   "max_fix_err": 10.184242054128868,
+   "nav_err_end": 4.507269930978361,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10037,
+   "outcome": "hard_landing",
+   "landing_err": 6.495318403569129,
+   "n_fix": 47,
+   "t_first_fix": 9.0,
+   "alt_first_fix": 5498.567812773932,
+   "max_fix_err": 14.06680616320385,
+   "nav_err_end": 0.6770150951919375,
+   "rejects": {
+    "rejected_ambiguous": 4
+   },
+   "category": "nav_ok_hazard"
+  },
+  {
+   "seed": 10038,
+   "outcome": "timeout",
+   "landing_err": 3.612451682119038,
+   "n_fix": 17,
+   "t_first_fix": 72.0,
+   "alt_first_fix": 4776.03630978183,
+   "max_fix_err": 6.707711998664738,
+   "nav_err_end": 3.5015501405620895,
+   "rejects": {
+    "rejected_ambiguous": 17
+   },
+   "category": "other"
+  },
+  {
+   "seed": 10039,
+   "outcome": "success",
+   "landing_err": 3.6166096094183784,
+   "n_fix": 25,
+   "t_first_fix": 7.0,
+   "alt_first_fix": 5223.933516771684,
+   "max_fix_err": 8.12797325006329,
+   "nav_err_end": 3.599584831326688,
+   "rejects": {
+    "rejected_ambiguous": 3
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10040,
+   "outcome": "success",
+   "landing_err": 1.2719229480077965,
+   "n_fix": 19,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5531.438050079468,
+   "max_fix_err": 20.852055539243697,
+   "nav_err_end": 1.4080516547094197,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10041,
+   "outcome": "success",
+   "landing_err": 1.8940918599843173,
+   "n_fix": 4,
+   "t_first_fix": 27.0,
+   "alt_first_fix": 4957.968734286657,
+   "max_fix_err": 3.9252089947701676,
+   "nav_err_end": 1.7114589788736865,
+   "rejects": {
+    "rejected_ambiguous": 13
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10042,
+   "outcome": "success",
+   "landing_err": 1.1519561246933863,
+   "n_fix": 27,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5289.760922184965,
+   "max_fix_err": 7.05267077193108,
+   "nav_err_end": 1.2204651650071414,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10043,
+   "outcome": "success",
+   "landing_err": 0.9162510380269375,
+   "n_fix": 44,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5776.173229533465,
+   "max_fix_err": 14.889518338336888,
+   "nav_err_end": 0.8643336040180334,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10044,
+   "outcome": "hard_landing",
+   "landing_err": 1571.2374816059707,
+   "n_fix": 6,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5712.966703492224,
+   "max_fix_err": 1958.4746402340197,
+   "nav_err_end": 1949.6325479257264,
+   "rejects": {
+    "rejected_gate": 31
+   },
+   "category": "false_fix"
+  },
+  {
+   "seed": 10045,
+   "outcome": "success",
+   "landing_err": 0.5475266242681812,
+   "n_fix": 23,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5559.665496920062,
+   "max_fix_err": 15.050627664000109,
+   "nav_err_end": 0.3945779494386643,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10046,
+   "outcome": "success",
+   "landing_err": 1.0613676918297086,
+   "n_fix": 26,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5303.901449594858,
+   "max_fix_err": 7.094209381843006,
+   "nav_err_end": 1.2062229829968578,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10047,
+   "outcome": "success",
+   "landing_err": 1.3951220475995483,
+   "n_fix": 24,
+   "t_first_fix": 17.0,
+   "alt_first_fix": 5073.87333622324,
+   "max_fix_err": 9.553468899168541,
+   "nav_err_end": 1.0617215546090806,
+   "rejects": {
+    "rejected_ambiguous": 8
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10048,
+   "outcome": "success",
+   "landing_err": 2.788081158652352,
+   "n_fix": 24,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5574.714258998517,
+   "max_fix_err": 12.394270746933682,
+   "nav_err_end": 2.910007318679348,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10049,
+   "outcome": "success",
+   "landing_err": 2.6257959190157636,
+   "n_fix": 21,
+   "t_first_fix": 3.0,
+   "alt_first_fix": 5651.458695514186,
+   "max_fix_err": 8.369662958775882,
+   "nav_err_end": 2.4208714544698116,
+   "rejects": {
+    "rejected_ambiguous": 1
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10050,
+   "outcome": "success",
+   "landing_err": 1.4659740058973434,
+   "n_fix": 32,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5277.807417481539,
+   "max_fix_err": 11.313254755647204,
+   "nav_err_end": 1.502085640946367,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10051,
+   "outcome": "success",
+   "landing_err": 0.9859460442055393,
+   "n_fix": 28,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5087.280916798141,
+   "max_fix_err": 8.942330219276952,
+   "nav_err_end": 0.7654318956560683,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10052,
+   "outcome": "success",
+   "landing_err": 1.1954769808336685,
+   "n_fix": 18,
+   "t_first_fix": 5.0,
+   "alt_first_fix": 4992.662865275947,
+   "max_fix_err": 4.371405146775108,
+   "nav_err_end": 1.155371995165424,
+   "rejects": {
+    "rejected_ambiguous": 2
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10053,
+   "outcome": "success",
+   "landing_err": 1.1883576681231258,
+   "n_fix": 29,
+   "t_first_fix": 7.0,
+   "alt_first_fix": 5348.7045129470725,
+   "max_fix_err": 4.854577881058174,
+   "nav_err_end": 1.034785148599894,
+   "rejects": {
+    "rejected_ambiguous": 3
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10054,
+   "outcome": "success",
+   "landing_err": 0.5647176243927869,
+   "n_fix": 54,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5657.9701534140195,
+   "max_fix_err": 15.934915967943054,
+   "nav_err_end": 0.4464087663298974,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10055,
+   "outcome": "timeout",
+   "landing_err": 0.617697442339991,
+   "n_fix": 26,
+   "t_first_fix": 25.0,
+   "alt_first_fix": 4786.745111428998,
+   "max_fix_err": 12.498086857356542,
+   "nav_err_end": 0.5776793619719339,
+   "rejects": {
+    "rejected_ambiguous": 12
+   },
+   "category": "other"
+  },
+  {
+   "seed": 10056,
+   "outcome": "hard_landing",
+   "landing_err": 147.44535578039432,
+   "n_fix": 12,
+   "t_first_fix": 19.0,
+   "alt_first_fix": 4712.596852181134,
+   "max_fix_err": 3.741090084693316,
+   "nav_err_end": 11.694666023812154,
+   "rejects": {
+    "rejected_ambiguous": 9
+   },
+   "category": "nav_ok_hazard"
+  },
+  {
+   "seed": 10057,
+   "outcome": "success",
+   "landing_err": 0.08418226819102351,
+   "n_fix": 20,
+   "t_first_fix": 9.0,
+   "alt_first_fix": 4991.874923676298,
+   "max_fix_err": 6.408195535347955,
+   "nav_err_end": 0.10998366812884575,
+   "rejects": {
+    "rejected_ambiguous": 4
+   },
+   "category": "precise"
+  },
+  {
+   "seed": 10058,
+   "outcome": "success",
+   "landing_err": 0.2962844660305914,
+   "n_fix": 42,
+   "t_first_fix": 1.0,
+   "alt_first_fix": 5433.323302578013,
+   "max_fix_err": 12.305602085338736,
+   "nav_err_end": 0.3725888042868597,
+   "rejects": {},
+   "category": "precise"
+  },
+  {
+   "seed": 10059,
+   "outcome": "success",
+   "landing_err": 2.0726297301038463,
+   "n_fix": 11,
+   "t_first_fix": 21.0,
+   "alt_first_fix": 5267.761249629835,
+   "max_fix_err": 13.217780668115585,
+   "nav_err_end": 2.3224033283870757,
+   "rejects": {
+    "rejected_ambiguous": 10
+   },
+   "category": "precise"
+  }
+ ]
+}

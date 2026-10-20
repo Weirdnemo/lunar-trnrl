@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.bak
+.ipynb_checkpoints/
+.venv/
+DO NOT UPLOAD/
+# raw terrain (public downloads, see data/README.md)
+data/*.tif
+data/*.npy
+.pytest_cache/
