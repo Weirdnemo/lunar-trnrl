@@ -5,7 +5,7 @@ models), with a full terrain-relative navigation (TRN) filter in the loop. It is
 question: **where can a learned guidance policy add anything over a classical baseline?**
 
 Companion paper: *Where Does Learned Guidance Help? A Real-Terrain Lunar Landing Benchmark*
-(Nimesh Chauhan). Preprint: TODO (arXiv link). Archived code: TODO (Zenodo DOI).
+(Nimesh Chauhan). Preprint: TODO (arXiv link). Archived code: https://doi.org/10.5281/zenodo.23497770
 
 ## What is in the box
 
@@ -96,7 +96,12 @@ paper for what was measured and what is hypothesis.
 
 ## Citation
 
-TODO: add the BibTeX entry and `CITATION.cff` once the preprint and DOI exist.
+If you use this code, please cite the archived release (see `CITATION.cff`):
+
+    Chauhan, N. lunar-trnrl: real-terrain lunar landing benchmark with terrain-relative
+    navigation. Zenodo, https://doi.org/10.5281/zenodo.23497770
+
+TODO: add the paper's BibTeX once the preprint exists.
 
 ## Licence
 

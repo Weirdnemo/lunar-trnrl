@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "lunar-trnrl: real-terrain lunar landing benchmark with terrain-relative navigation"
+authors:
+  - family-names: Chauhan
+    given-names: Nimesh
+doi: 10.5281/zenodo.23497770
+repository-code: "https://github.com/Weirdnemo/lunar-trnrl"
+keywords:
+  - lunar landing
+  - terrain-relative navigation
+  - reinforcement learning
+  - powered descent
+  - benchmark
