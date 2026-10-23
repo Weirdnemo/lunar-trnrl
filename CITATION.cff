@@ -4,7 +4,7 @@ title: "lunar-trnrl: real-terrain lunar landing benchmark with terrain-relative 
 authors:
   - family-names: Chauhan
     given-names: Nimesh
-doi: 10.5281/zenodo.23497770
+doi: 10.5281/zenodo.23585848
 repository-code: "https://github.com/Weirdnemo/lunar-trnrl"
 keywords:
   - lunar landing
