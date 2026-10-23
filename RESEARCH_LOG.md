@@ -1,6 +1,7 @@
 # Research Log: RL guidance for lunar powered descent with TRN
 
-Working title: *Uncertainty-aware learned descent guidance under degraded terrain-relative navigation.*
+Working title: *Where Does Reinforcement Learning Help Lunar Terrain-Relative Landing? Residual
+Control vs. Decision-Level Policies*
 Owner: Nimesh Chauhan.
 
 Experiments only, in order. Entry IDs match the old log, so the gaps are just entries that weren't experiments. Numbers come from `scripts/` and `results/*.json` unless an entry says otherwise. One seed per variant unless noted, so "not supported" doesn't mean "refuted".

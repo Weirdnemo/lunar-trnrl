@@ -2,7 +2,7 @@
 
 Everything runs on your computer. The big GeoTIFF never has to be uploaded.
 
-## 1. Install (once, in your `trnrl` environment)
+## 1. Install (once, in your environment)
     pip install rasterio numpy scipy pillow stable-baselines3 gymnasium
 
 ## 2. Try the sandbox with no RL model

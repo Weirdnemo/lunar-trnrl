@@ -4,8 +4,9 @@ An open 3-DoF lunar powered-descent benchmark on real polar terrain (LOLA digita
 models), with a full terrain-relative navigation (TRN) filter in the loop. It is built to ask one
 question: **where can a learned guidance policy add anything over a classical baseline?**
 
-Companion paper: *Where Does Learned Guidance Help? A Real-Terrain Lunar Landing Benchmark*
-(Nimesh Chauhan) Archived code: https://doi.org/10.5281/zenodo.23497770
+Companion paper: *Where Does Reinforcement Learning Help Lunar Terrain-Relative Landing? Residual
+Control vs. Decision-Level Policies*
+(Nimesh Chauhan). Archived code: https://doi.org/10.5281/zenodo.23497770
 
 ## What is in the box
 
@@ -15,7 +16,7 @@ Companion paper: *Where Does Learned Guidance Help? A Real-Terrain Lunar Landing
 | `scripts/` | Training, evaluation, sweeps, mechanism checks, paired statistics, table and figure generation |
 | `tests/` | `pytest` suite (20 tests) |
 | `results/` | Result JSON files behind every table in the paper, plus `paper_tables.md` and `paired_ci.md` |
-| `figures/paper/` | Paper figures (PDF and PNG) |
+| `figures/paper/` | Paper figures (PDF and PNG), including the three terrain-relative navigation figures (`fig_trn_match`, `fig_trn_cases`, `fig_trn_tiles`) |
 | `sandbox/` | A small browser 3D front end for flying the simulator (see `SANDBOX.md`) |
 | `RESEARCH_LOG.md` | Chronological research log, including failed experiments and a bug found along the way |
 
@@ -44,7 +45,6 @@ python scripts/crop_dem.py data/Site23_final_adj_5mpp_surf.tif --size_km 8 --out
 
 Other options: `--centre` (crop around the tile centre), `--out_dx` (output cell size in metres,
 block-averaged, default 10) and `--dx` (metres per pixel if not stored in the file).
-TODO: confirm the Site23 command and whether either crop used `--centre`.
 
 ## Reproduce the paper
 
@@ -64,7 +64,8 @@ PART=all N=200 NB=100 JOBS=2 HAW=/path/to/Haworth_final_adj_5mpp_surf.tif \
 # tables, paired confidence intervals, figures
 python scripts/paper_tables.py          # -> results/paper_tables.md
 python scripts/paired_ci.py             # -> results/paired_ci.md
-python scripts/paper_figures.py         # -> figures/paper/
+python scripts/paper_figures.py         # -> figures/paper/ (system, regime, sweep, first-fix, decision and policy figures)
+python scripts/trn_figures.py           # -> figures/paper/fig_trn_*.pdf (TRN matching, acceptance tests, matchability maps)
 ```
 
 The full run takes many hours on a single consumer GPU/CPU machine (the paper's runs used a
@@ -73,7 +74,7 @@ regenerate every table and figure without re-running anything.
 
 `paper_figures.py` takes optional figure numbers (`python scripts/paper_figures.py 3 5`; default all 1 to 7)
 and reads only `results/*.json` and `results/paper_tables.md`, so run `PART=T bash scripts/run_paper.sh`
-first. `paired_ci.py` takes no arguments.
+first. `paired_ci.py` takes no arguments. `trn_figures.py` reads `data/site04.npy` and `data/site23.npy` and uses fixed scenes and a fixed noise seed, so the three TRN figures regenerate identically.
 
 ## Mechanism checks and analysis scripts
 
@@ -81,7 +82,8 @@ first. `paired_ci.py` takes no arguments.
 |---|---|
 | `scripts/mechanism.py` | Altitude-fix, noise-replay and geometry mechanism tests (`fix`, `noise`, `geom`) |
 | `scripts/decision_headroom.py` | First-decision action sweep and hindsight headroom |
-| `scripts/fit_decision_policy.py` | Offline conditional-logit chooser |
+| `scripts/fit_decision_policy.py` | Offline logistic chooser (shared-weight logistic regression on per-action outcomes) |
+| `scripts/trn_figures.py` | Terrain-relative navigation figures on real tiles |
 | `scripts/train_detour.py`, `scripts/eval_detour.py` | Decision-layer PPO training and evaluation |
 | `scripts/train_ppo.py`, `scripts/evaluate.py` | Residual PPO training and evaluation |
 | `scripts/diagnose_failures.py` | Failure categorisation |
@@ -89,10 +91,11 @@ first. `paired_ci.py` takes no arguments.
 
 ## Scope and limits
 
-3-DoF dynamics; terrain is mostly interpolated from sparse LOLA tracks; the baseline is self-built;
-the realism-layer values (6 m registration offset, 1 m correlated map error, 40 degree field of
-view) are our assumptions, not parameters of a specific instrument; few training seeds. See the
-paper for what was measured and what is hypothesis.
+3-DoF dynamics; terrain is mostly interpolated from sparse LOLA tracks; the navigation filter and
+baseline guidance are implemented in this work rather than taken from a flight system; the
+realism-layer values (6 m registration offset, 1 m correlated map error with a 150 m correlation
+length, 40 degree field of view) are modelling choices, not parameters of a specific instrument;
+learned results use one to five training seeds. See the paper for what was measured.
 
 ## Citation
 
@@ -100,7 +103,6 @@ If you use this code, please cite the archived release (see `CITATION.cff`):
 
     Chauhan, N. lunar-trnrl: real-terrain lunar landing benchmark with terrain-relative
     navigation. Zenodo, https://doi.org/10.5281/zenodo.23497770
-
 
 ## Licence
 
